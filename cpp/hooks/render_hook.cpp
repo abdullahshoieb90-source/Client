@@ -1,7 +1,7 @@
 
 #include "render_hook.h"
 #include "../render/renderer.h"
-#include "../logger/logger.h
+#include "../logger/logger.h"
 
 namespace bedrock::hooks {
 

@@ -1,5 +1,7 @@
 
 #include "fps_counter.h"
+#include "../module_manager.h"
+#include <jni.h>
 #include "../../logger/logger.h"
 #include "../../render/renderer.h"
 
