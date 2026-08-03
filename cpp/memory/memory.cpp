@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <cstdio>
 #include <cstring>
+#include <cinttypes>
 #include <dlfcn.h>
 
 namespace bedrock::memory {
@@ -45,7 +46,7 @@ uintptr_t getModuleBase(const char* moduleName) {
     uintptr_t base = 0;
     while (fgets(line, sizeof(line), f)) {
         if (strstr(line, moduleName)) {
-            sscanf(line, "%lx", &base);
+            sscanf(line, "%" PRIxPTR, &base);
             break;
         }
     }
