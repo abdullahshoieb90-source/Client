@@ -1,0 +1,76 @@
+{
+  "modules": [
+    {
+      "id": "fps_counter",
+      "name": "FPS Counter",
+      "category": "RENDER",
+      "description": "يعرض عدد الإطارات",
+      "enabled_by_default": true,
+      "native": true
+    },
+    {
+      "id": "cps_counter",
+      "name": "CPS Counter",
+      "category": "RENDER",
+      "description": "يعرض CPS",
+      "enabled_by_default": true,
+      "native": true
+    },
+    {
+      "id": "zoom",
+      "name": "Zoom",
+      "category": "RENDER",
+      "description": "تكبير",
+      "enabled_by_default": false,
+      "native": true
+    },
+    {
+      "id": "fullbright",
+      "name": "Fullbright",
+      "category": "WORLD",
+      "description": "إضاءة",
+      "enabled_by_default": false,
+      "native": true
+    },
+    {
+      "id": "esp",
+      "name": "ESP",
+      "category": "RENDER",
+      "description": "رؤية عبر الجدران",
+      "enabled_by_default": false,
+      "native": true
+    },
+    {
+      "id": "hitbox",
+      "name": "Hitbox",
+      "category": "COMBAT",
+      "description": "توسيع Hitbox",
+      "enabled_by_default": false,
+      "native": true
+    },
+    {
+      "id": "autosprint",
+      "name": "AutoSprint",
+      "category": "MOVEMENT",
+      "description": "ركض تلقائي",
+      "enabled_by_default": false,
+      "native": true
+    },
+    {
+      "id": "keystrokes",
+      "name": "Keystrokes",
+      "category": "RENDER",
+      "description": "أزرار",
+      "enabled_by_default": true,
+      "native": false
+    },
+    {
+      "id": "coordinates",
+      "name": "Coordinates",
+      "category": "RENDER",
+      "description": "إحداثيات",
+      "enabled_by_default": true,
+      "native": false
+    }
+  ]
+}
