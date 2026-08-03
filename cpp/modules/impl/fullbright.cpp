@@ -1,5 +1,7 @@
 
 #include "fullbright.h"
+#include "../module_manager.h"
+#include <jni.h>
 #include "../../logger/logger.h"
 
 namespace bedrock::modules {
@@ -8,7 +10,6 @@ void Fullbright::onDisable() { enabled = false; LOGI("Fullbright", "Disabled"); 
 }
 
 extern "C" {
-#include <jni.h>
 JNIEXPORT void JNICALL Java_com_bedrock_client_modules_impl_FullbrightModule_nativeEnable(JNIEnv* env, jobject thiz) {
     bedrock::modules::ModuleManager::getInstance().setEnabled("Fullbright", true);
 }
