@@ -10,15 +10,15 @@
   - Bootstrap initialize
 
 ## 2. Bootstrap
-- Loads native library `libbedrock_client.so` via NativeLoader
-- BridgeManager init (JNI)
-- Calls LauncherManager initialize
+- Tries to load the optional `libbedrock_client.so` via NativeLoader
+- Initializes BridgeManager when JNI is available
+- Always initializes LauncherManager, even when the optional native component fails
 
 ## 3. Launcher
+- Reads the installed package metadata from `com.mojang.minecraftpe`
+- Uses its real `versionName` instead of a hard-coded version
 - SandboxManager.createSandbox(instanceId)
-- VersionManager compatibility check
-- InstanceManager get instance
-- Bootstrap.launchMinecraft -> native
+- Opens Minecraft through its Android launcher Activity
 
 ## 4. Environment
 - sandbox: /files/sandbox/{instance}/games, worlds
@@ -29,7 +29,7 @@
 
 ## 5. Minecraft
 - package: check com.mojang.minecraftpe installed
-- version: 1.21.100, 1.21.130
+- version: detected dynamically from the installed package
 - profile: Player, Options
 - instance: Instance #1, #2
 - runtime: start native runtime

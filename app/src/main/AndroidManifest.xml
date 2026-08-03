@@ -1,22 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" tools:ignore="QueryAllPackagesPermission" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <queries>
         <package android:name="com.mojang.minecraftpe" />
-        <intent>
-            <action android:name="android.intent.action.MAIN" />
-        </intent>
     </queries>
 
     <application
@@ -26,14 +21,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.BedrockClient"
+        android:theme="@style/Theme.VClient"
         android:extractNativeLibs="true"
         android:requestLegacyExternalStorage="true">
 
         <activity
             android:name=".activity.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.BedrockClient">
+            android:theme="@style/Theme.VClient">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -45,7 +40,7 @@
             android:exported="false"
             android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
             android:screenOrientation="sensorLandscape"
-            android:theme="@style/Theme.BedrockClient.Fullscreen" />
+            android:theme="@style/Theme.VClient.Fullscreen" />
 
         <service
             android:name=".service.ClientService"

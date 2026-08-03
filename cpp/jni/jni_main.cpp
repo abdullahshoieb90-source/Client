@@ -18,7 +18,7 @@ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved) {
     }
 
     bedrock::logger::Logger::init();
-    LOGI("JNI", "JNI_OnLoad called - Bedrock Client Native lib loading");
+    LOGI("JNI", "JNI_OnLoad called - V Client native library loading");
 
     // Initialize Bootstrap via Bridge
     bedrock::bridge::Bridge::getInstance().initialize(env);

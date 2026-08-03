@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "BedrockClient"
+rootProject.name = "VClient"
 include(":app")
