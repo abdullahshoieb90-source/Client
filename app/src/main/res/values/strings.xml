@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bedrock Client</string>
+    <string name="launch">Launch Minecraft</string>
+    <string name="settings">Settings</string>
+    <string name="mods">Mods / Modules</string>
+    <string name="worlds">Worlds</string>
+    <string name="skins">Skins</string>
+    <string name="fps_counter">FPS Counter</string>
+    <string name="cps_counter">CPS Counter</string>
+</resources>
