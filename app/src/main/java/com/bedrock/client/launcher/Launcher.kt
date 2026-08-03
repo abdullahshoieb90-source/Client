@@ -1,53 +1,72 @@
-
 package com.bedrock.client.launcher
 
 import android.content.Context
-import com.bedrock.client.bootstrap.Bootstrap
+import com.bedrock.client.R
 import com.bedrock.client.environment.sandbox.SandboxManager
-import com.bedrock.client.minecraft.version.VersionManager
-import com.bedrock.client.minecraft.instance.InstanceManager
-import com.bedrock.client.settings.SettingsManager
 import com.bedrock.client.logger.Logger
+import com.bedrock.client.minecraft.`package`.MinecraftPackageManager
+import com.bedrock.client.minecraft.version.VersionManager
+import com.bedrock.client.settings.SettingsManager
 
-/**
- * القلب الرئيسي للبرنامج
- * وظيفته:
- * - بدء تشغيل التطبيق
- * - تهيئة جميع الأنظمة
- * - تحميل الإعدادات
- * - تجهيز بيئة Minecraft
- * - استدعاء Bootstrap
- */
-class Launcher(private val context: Context) {
-    private val sandboxManager = SandboxManager(context)
-    private val versionManager = VersionManager.getInstance(context)
-    private val instanceManager = InstanceManager.getInstance(context)
+/** Coordinates validation and opens the Minecraft installation on the device. */
+class Launcher(context: Context) {
+    private val appContext = context.applicationContext
+    private val sandboxManager = SandboxManager(appContext)
+    private val versionManager = VersionManager.getInstance(appContext)
+    private val minecraftPackageManager = MinecraftPackageManager(appContext)
 
     fun launch(options: LaunchOptions, callback: (Result) -> Unit) {
         Logger.i("Launcher", "Starting launch sequence: $options")
+
         try {
-            // 1. Settings + Database
-            val settings = SettingsManager.getInstance(context).getAll()
-
-            // 2. Environment
-            sandboxManager.createSandbox(options.instanceId)
-
-            // 3. Minecraft checks
+            // Android package metadata is the source of truth; no hard-coded game version.
             val version = versionManager.getActiveVersion()
-            if (!versionManager.isCompatible(version)) {
-                callback(Result.Failure("Version not compatible: $version"))
+            if (version == null) {
+                callback(Result.Failure(appContext.getString(R.string.minecraft_not_installed)))
                 return
             }
 
-            // 4. Loader
-            val instance = instanceManager.getInstance(options.instanceId)
+            if (!versionManager.isCompatible(version)) {
+                callback(
+                    Result.Failure(
+                        appContext.getString(R.string.minecraft_disabled, version.code)
+                    )
+                )
+                return
+            }
 
-            // 5. Bridge JNI -> cpp/bootstrap
-            Bootstrap.getInstance(context).launchMinecraft(instance, Bootstrap.VersionWrapper(version.code), callback)
+            SettingsManager.getInstance(appContext).getAll()
+            sandboxManager.createSandbox(options.instanceId)
 
-        } catch (e: Exception) {
-            Logger.e("Launcher", "Launch failed", e)
-            callback(Result.Failure(e.message ?: "Unknown error"))
+            // Do not dlopen libminecraftpe.so from this app. Android isolates native
+            // libraries per package, so launch Minecraft through its package activity.
+            minecraftPackageManager.launchInstalled().fold(
+                onSuccess = { installation ->
+                    Logger.i(
+                        "Launcher",
+                        "Opened ${installation.packageName} ${installation.versionName}"
+                    )
+                    callback(
+                        Result.Success(
+                            version = installation.versionName,
+                            packageName = installation.packageName
+                        )
+                    )
+                },
+                onFailure = { error ->
+                    Logger.e("Launcher", "Minecraft launch failed", error)
+                    callback(
+                        Result.Failure(
+                            error.message ?: appContext.getString(R.string.launch_unknown_error)
+                        )
+                    )
+                }
+            )
+        } catch (error: Exception) {
+            Logger.e("Launcher", "Launch failed", error)
+            callback(
+                Result.Failure(error.message ?: appContext.getString(R.string.launch_unknown_error))
+            )
         }
     }
 
@@ -58,7 +77,7 @@ class Launcher(private val context: Context) {
     )
 
     sealed class Result {
-        data class Success(val pid: Int) : Result()
+        data class Success(val version: String, val packageName: String) : Result()
         data class Failure(val reason: String) : Result()
     }
 }

@@ -25,7 +25,7 @@ void ImGuiHandler::beginFrame() {
 
 void ImGuiHandler::renderOverlay(const std::unordered_map<std::string, std::string>& texts) {
     // Example overlay for FPS, CPS, Coordinates
-    // ImGui::Begin("Bedrock Client Overlay", nullptr, ImGuiWindowFlags_NoDecoration | ....);
+    // ImGui::Begin("V Client Overlay", nullptr, ImGuiWindowFlags_NoDecoration | ....);
     // for (auto& [k,v] : texts) ImGui::Text("%s: %s", k.c_str(), v.c_str());
     // ImGui::End();
 }

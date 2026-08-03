@@ -1,4 +1,4 @@
-# Bedrock Client - Minecraft Bedrock Android Client
+# V Client - Minecraft Bedrock Android Launcher
 
 Client متكامل لأندرويد لـ Minecraft Bedrock مع تحسينات وميزات مثل FPS Counter, CPS Counter والمزيد.
 
@@ -168,8 +168,11 @@ cpp/render/ + cpp/modules/ + cpp/hooks/
 
 ## ملاحظة عن Minecraft Bedrock
 
-هذا Client يعمل عبر تحميل `libminecraftpe.so` الأصلي و Hooking عبر `libbedrock_client.so`.
-يجب توفر Minecraft مثبتة (`com.mojang.minecraftpe`) أو توفير الـ .so بشكل قانوني.
+يتعرّف V Client تلقائيًا على الإصدار المثبّت من حزمة Minecraft الرسمية
+(`com.mojang.minecraftpe`) ثم يفتح Activity الخاصة بها عبر Android. لا يحاول مسار
+التشغيل العادي تحميل `libminecraftpe.so` من حزمة أخرى، لأن عزل التطبيقات والـ linker
+في إصدارات Android الحديثة يمنع ذلك. يبقى `libbedrock_client.so` مكوّنًا اختياريًا
+للتطوير ولا يمنع فتح اللعبة إذا تعذّر تحميله.
 
 الهدف تعليمي ولبناء Launcher محسن.
 

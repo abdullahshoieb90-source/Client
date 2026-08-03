@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">V Client</string>
+    <string name="app_tagline">مشغّل Minecraft Bedrock</string>
+
+    <string name="home">الرئيسية</string>
+    <string name="launch">تشغيل Minecraft</string>
+    <string name="settings">الإعدادات</string>
+    <string name="mods">الإضافات</string>
+    <string name="profile">الملف الشخصي</string>
+    <string name="worlds">العوالم</string>
+    <string name="skins">المظاهر</string>
+
+    <string name="minecraft_version_detected">إصدار Minecraft المثبّت: %1$s</string>
+    <string name="minecraft_not_installed">Minecraft غير مثبت على هذا الجهاز</string>
+    <string name="minecraft_disabled">إصدار Minecraft %1$s معطّل</string>
+    <string name="status_ready">جاهز للتشغيل</string>
+    <string name="status_install_required">ثبّت Minecraft للمتابعة</string>
+    <string name="status_launching">جارٍ فتح Minecraft…</string>
+    <string name="launch_success">تم فتح Minecraft %1$s</string>
+    <string name="launch_failed">تعذّر التشغيل: %1$s</string>
+    <string name="launch_unknown_error">تعذّر فتح Minecraft</string>
+    <string name="notification_channel_name">V Client</string>
+
+    <string name="fps_counter">عداد FPS</string>
+    <string name="cps_counter">عداد CPS</string>
+</resources>
