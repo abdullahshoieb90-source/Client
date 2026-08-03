@@ -25,6 +25,6 @@ class ModuleAdapter(private val modules: List<GameModule>) : RecyclerView.Adapte
         holder.name.text = m.name
         holder.desc.text = m.description
         holder.toggle.isChecked = m.isEnabled
-        holder.toggle.setOnCheckedChangeListener { _, checked -> m.setEnabled(checked) }
+        holder.toggle.setOnCheckedChangeListener { _, checked -> m.setModuleEnabled(checked) }
     }
 }

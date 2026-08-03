@@ -14,7 +14,9 @@ abstract class GameModule(
     open fun onTick() {}
     open fun onRender(delta: Float) {}
 
-    fun setEnabled(enabled: Boolean) {
+    // Note: cannot be named setEnabled() because the `isEnabled` property
+    // already generates a setEnabled(Boolean) setter on the JVM.
+    fun setModuleEnabled(enabled: Boolean) {
         if (isEnabled == enabled) return
         isEnabled = enabled
         if (enabled) onEnable() else onDisable()
