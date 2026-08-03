@@ -43,7 +43,7 @@ class Launcher(private val context: Context) {
             val instance = instanceManager.getInstance(options.instanceId)
 
             // 5. Bridge JNI -> cpp/bootstrap
-            Bootstrap.getInstance(context).launchMinecraft(instance, version, callback)
+            Bootstrap.getInstance(context).launchMinecraft(instance, Bootstrap.VersionWrapper(version.code), callback)
 
         } catch (e: Exception) {
             Logger.e("Launcher", "Launch failed", e)
