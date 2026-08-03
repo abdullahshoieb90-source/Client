@@ -2,6 +2,7 @@
 #include "memory.h"
 #include <sys/mman.h>
 #include <unistd.h>
+#include <cstdio>
 #include <cstring>
 #include <dlfcn.h>
 

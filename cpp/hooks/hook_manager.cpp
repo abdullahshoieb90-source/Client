@@ -1,5 +1,6 @@
 
 #include "hook_manager.h"
+#include <jni.h>
 #include "../logger/logger.h"
 #include "../memory/memory.h"
 
