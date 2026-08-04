@@ -1,8 +1,8 @@
-#include "process_launcher.h"
+#include "ProcessLauncher.h"
 
 #include "../logger/logger.h"
-#include "library_loader.h"
-#include "minecraft_loader.h"
+#include "LibraryLoader.h"
+#include "MinecraftLoader.h"
 
 namespace bedrock::runtime {
 

@@ -4,8 +4,8 @@
 #include "../logger/logger.h"
 #include "../modules/module_manager.h"
 #include "../render/renderer.h"
-#include "library_loader.h"
-#include "process_launcher.h"
+#include "LibraryLoader.h"
+#include "ProcessLauncher.h"
 
 namespace bedrock::runtime {
 

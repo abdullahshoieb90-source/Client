@@ -1,8 +1,8 @@
-#include "minecraft_loader.h"
+#include "MinecraftLoader.h"
 
 #include "../logger/logger.h"
-#include "library_loader.h"
-#include "symbol_resolver.h"
+#include "LibraryLoader.h"
+#include "SymbolResolver.h"
 
 namespace bedrock::runtime {
 
