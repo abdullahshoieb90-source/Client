@@ -1,4 +1,4 @@
-package com.bedrock.client.minecraft.runtime
+package com.bedrock.vclient.minecraft.runtime
 
 interface Runtime {
 
