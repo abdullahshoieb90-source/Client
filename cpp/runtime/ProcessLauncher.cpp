@@ -1,9 +1,8 @@
 #include "process_launcher.h"
 
-#include <dlfcn.h>
-
 #include "../logger/logger.h"
 #include "library_loader.h"
+#include "minecraft_loader.h"
 
 namespace bedrock::runtime {
 
@@ -16,6 +15,7 @@ bool ProcessLauncher::launch() {
 
     LOGI("ProcessLauncher", "Launching Minecraft");
 
+    // التأكد من تحميل libminecraftpe.so
     void* minecraft =
         LibraryLoader::getInstance().getLibraryHandle("minecraft");
 
@@ -27,16 +27,30 @@ bool ProcessLauncher::launch() {
         return false;
     }
 
-    // سيتم لاحقًا:
-    //
-    // - Resolve JNI_OnLoad
-    // - Resolve ANativeActivity_onCreate
-    // - Resolve Minecraft symbols
-    // - Start Minecraft runtime
+    // تهيئة Minecraft Runtime
+    MinecraftLoader& loader = MinecraftLoader::getInstance();
+
+    if (!loader.initialize()) {
+
+        LOGE("ProcessLauncher",
+             "Failed to initialize Minecraft.");
+
+        return false;
+    }
+
+    // تشغيل Minecraft
+    if (!loader.launch()) {
+
+        LOGE("ProcessLauncher",
+             "Failed to launch Minecraft.");
+
+        return false;
+    }
 
     launched = true;
 
-    LOGI("ProcessLauncher", "Minecraft launch prepared");
+    LOGI("ProcessLauncher",
+         "Minecraft started successfully.");
 
     return true;
 }
@@ -46,11 +60,15 @@ void ProcessLauncher::shutdown() {
     if (!launched)
         return;
 
-    LOGI("ProcessLauncher", "Stopping Minecraft runtime");
+    LOGI("ProcessLauncher",
+         "Stopping Minecraft runtime");
 
-    // Cleanup سيضاف لاحقًا
+    MinecraftLoader::getInstance().shutdown();
 
     launched = false;
+
+    LOGI("ProcessLauncher",
+         "Minecraft stopped.");
 }
 
 } // namespace bedrock::runtime
