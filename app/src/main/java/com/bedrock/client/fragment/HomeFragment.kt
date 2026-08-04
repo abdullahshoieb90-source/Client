@@ -33,7 +33,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onResume() {
         super.onResume()
         if (this::versionManager.isInitialized && !launchInProgress) {
-            // Refresh every time the user returns in case Minecraft was installed/updated.
             renderInstalledVersion()
         }
     }
@@ -54,17 +53,31 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
                 when (result) {
                     is Launcher.Result.Success -> {
+                        val successMessage = if (result.environmentSynchronized) {
+                            getString(
+                                R.string.launch_success_private_env,
+                                result.version,
+                                result.instanceId
+                            )
+                        } else {
+                            getString(
+                                R.string.launch_success_local_env_only,
+                                result.version,
+                                result.instanceId
+                            )
+                        }
+
                         versionText.text = getString(
                             R.string.minecraft_version_detected,
                             result.version
                         )
-                        statusText.text = getString(R.string.launch_success, result.version)
+                        statusText.text = successMessage
                         statusText.setTextColor(
                             ContextCompat.getColor(requireContext(), R.color.success)
                         )
                         Toast.makeText(
                             requireContext(),
-                            getString(R.string.launch_success, result.version),
+                            successMessage,
                             Toast.LENGTH_SHORT
                         ).show()
                         launchButton.isEnabled = true

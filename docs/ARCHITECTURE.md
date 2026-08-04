@@ -17,11 +17,15 @@
 ## 3. Launcher
 - Reads the installed package metadata from `com.mojang.minecraftpe`
 - Uses its real `versionName` instead of a hard-coded version
-- SandboxManager.createSandbox(instanceId)
+- Prepares a private instance under `/files/instances/{instance}`
+- Builds a Bedrock-style sandbox under `/files/sandbox/{instance}/games/com.mojang`
+- Best-effort mirrors the active instance to legacy shared Minecraft storage when Android allows it
 - Opens Minecraft through its Android launcher Activity
 
 ## 4. Environment
-- sandbox: /files/sandbox/{instance}/games, worlds
+- instances: `/files/instances/{instance}` with profile, worlds, resource packs, behavior packs, skins, shaders, exports
+- sandbox: `/files/sandbox/{instance}/games/com.mojang/...`
+- export bundle: `/files/instances/{instance}/exports/active/games/com.mojang`
 - filesystem: copy/delete/move
 - storage: internal/external/scoped
 - permission: Android permissions
