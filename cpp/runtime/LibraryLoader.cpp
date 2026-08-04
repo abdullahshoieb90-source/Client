@@ -17,7 +17,7 @@ bool LibraryLoader::load() {
 
     // سيتم لاحقًا استبدال المسار بالمسار الحقيقي القادم من RuntimeConfig
     const std::string mcLib =
-        "/data/app/com.mojang.minecraftpe/lib/arm64/libminecraftpe.so";
+    RuntimeConfig::getInstance().getMinecraftLibraryPath();
 
     return loadLibrary("minecraft", mcLib);
 }
