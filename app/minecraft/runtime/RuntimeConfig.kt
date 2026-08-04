@@ -1,4 +1,4 @@
-package com.bedrock.client.runtime
+package com.bedrock.vclient.runtime
 
 import java.io.File
 
