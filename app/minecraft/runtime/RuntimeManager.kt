@@ -1,46 +1,49 @@
-package com.bedrock.vclient.runtime
+package com.bedrock.client.runtime
+
+import android.content.Context
+import android.content.pm.PackageManager
+import com.bedrock.client.logger.Logger
 
 class RuntimeManager(
-    private val config: RuntimeConfig,
-    private val runtime: Runtime
+    private val context: Context
 ) {
 
-    private var state: RuntimeState = RuntimeState.IDLE
+    fun prepare(packageName: String): Boolean {
 
-    fun initialize() {
-        if (state != RuntimeState.IDLE) return
+        return try {
 
-        state = RuntimeState.INITIALIZING
+            val app =
+                context.packageManager.getApplicationInfo(packageName, 0)
 
-        runtime.initialize()
+            nativeSetRuntimeConfig(
+                packageName,
+                app.sourceDir,
+                app.nativeLibraryDir,
+                context.filesDir.absolutePath
+            )
 
-        state = RuntimeState.READY
+            Logger.i(
+                "RuntimeManager",
+                "Runtime prepared."
+            )
+
+            true
+
+        } catch (e: PackageManager.NameNotFoundException) {
+
+            Logger.e(
+                "RuntimeManager",
+                "Minecraft not installed."
+            )
+
+            false
+        }
     }
 
-    fun start() {
-        if (state != RuntimeState.READY) return
-
-        runtime.start()
-
-        state = RuntimeState.RUNNING
-    }
-
-    fun stop() {
-        if (state != RuntimeState.RUNNING) return
-
-        runtime.stop()
-
-        state = RuntimeState.STOPPED
-    }
-
-    fun destroy() {
-        runtime.destroy()
-        state = RuntimeState.IDLE
-    }
-
-    fun getState(): RuntimeState = state
-
-    fun getConfig(): RuntimeConfig = config
-
-    fun isRunning(): Boolean = runtime.isRunning()
+    private external fun nativeSetRuntimeConfig(
+        packageName: String,
+        apkPath: String,
+        nativeLibraryDir: String,
+        sandboxPath: String
+    )
 }
