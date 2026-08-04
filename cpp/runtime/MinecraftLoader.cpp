@@ -1,6 +1,7 @@
 #include "minecraft_loader.h"
 
 #include "../logger/logger.h"
+#include "library_loader.h"
 #include "symbol_resolver.h"
 
 namespace bedrock::runtime {
@@ -12,17 +13,17 @@ MinecraftLoader& MinecraftLoader::getInstance() {
 
 bool MinecraftLoader::initialize() {
 
-    LOGI("MinecraftLoader", "Initializing Minecraft");
+    void* handle =
+        LibraryLoader::getInstance().getLibraryHandle("minecraft");
 
-    // لاحقًا سيتم البحث عن الرموز المطلوبة:
-    //
-    // auto symbol =
-    //     SymbolResolver::getInstance().find("...");
-    //
-    // if (!symbol)
-    //     return false;
+    if (handle == nullptr) {
+        LOGE("MinecraftLoader", "Minecraft library is not loaded.");
+        return false;
+    }
 
     initialized = true;
+
+    LOGI("MinecraftLoader", "Minecraft initialized.");
 
     return true;
 }
@@ -30,25 +31,25 @@ bool MinecraftLoader::initialize() {
 bool MinecraftLoader::launch() {
 
     if (!initialized) {
-        LOGE("MinecraftLoader", "Minecraft is not initialized");
+        LOGE("MinecraftLoader", "Minecraft is not initialized.");
         return false;
     }
 
-    LOGI("MinecraftLoader", "Launching Minecraft");
+    LOGI("MinecraftLoader", "Preparing Minecraft launch.");
 
-    // لاحقًا:
-    // - استدعاء JNI_OnLoad إن لزم
-    // - استدعاء نقطة الدخول المناسبة
-    // - تهيئة NativeActivity أو أي نقطة بدء حسب إصدار اللعبة
+    // TODO:
+    // Resolve required symbols with SymbolResolver
+    // Initialize the runtime
+    // Call the correct Minecraft entry point
 
     return true;
 }
 
 void MinecraftLoader::shutdown() {
 
-    LOGI("MinecraftLoader", "Shutting down Minecraft");
-
     initialized = false;
+
+    LOGI("MinecraftLoader", "Minecraft shutdown.");
 }
 
 } // namespace bedrock::runtime
