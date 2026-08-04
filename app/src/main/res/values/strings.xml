@@ -18,6 +18,8 @@
     <string name="status_install_required">Install Minecraft to continue</string>
     <string name="status_launching">Opening Minecraft…</string>
     <string name="launch_success">Minecraft %1$s opened</string>
+    <string name="launch_success_private_env">Minecraft %1$s opened with private instance %2$s</string>
+    <string name="launch_success_local_env_only">Minecraft %1$s opened; private instance %2$s was prepared locally only</string>
     <string name="launch_failed">Launch failed: %1$s</string>
     <string name="launch_unknown_error">Unable to launch Minecraft</string>
     <string name="notification_channel_name">V Client</string>

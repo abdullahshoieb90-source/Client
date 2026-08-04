@@ -18,6 +18,8 @@
     <string name="status_install_required">ثبّت Minecraft للمتابعة</string>
     <string name="status_launching">جارٍ فتح Minecraft…</string>
     <string name="launch_success">تم فتح Minecraft %1$s</string>
+    <string name="launch_success_private_env">تم فتح Minecraft %1$s باستخدام البيئة الخاصة %2$s</string>
+    <string name="launch_success_local_env_only">تم فتح Minecraft %1$s، وتم تجهيز البيئة الخاصة %2$s محليًا فقط</string>
     <string name="launch_failed">تعذّر التشغيل: %1$s</string>
     <string name="launch_unknown_error">تعذّر فتح Minecraft</string>
     <string name="notification_channel_name">V Client</string>

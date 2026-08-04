@@ -53,7 +53,16 @@ class Bootstrap private constructor(private val context: Context) {
             val pid = BridgeManager.getInstance()
                 .launchGame(instance.path.absolutePath, version.code)
             if (pid > 0) {
-                callback(Launcher.Result.Success(version.code, "com.mojang.minecraftpe"))
+                callback(
+                    Launcher.Result.Success(
+                        version = version.code,
+                        packageName = "com.mojang.minecraftpe",
+                        instanceId = instance.id,
+                        sandboxPath = instance.path.absolutePath,
+                        exportTargetPath = null,
+                        environmentSynchronized = false
+                    )
+                )
             } else {
                 callback(Launcher.Result.Failure("Native component could not prepare Minecraft"))
             }

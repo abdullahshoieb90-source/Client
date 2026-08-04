@@ -169,10 +169,20 @@ cpp/render/ + cpp/modules/ + cpp/hooks/
 ## ملاحظة عن Minecraft Bedrock
 
 يتعرّف V Client تلقائيًا على الإصدار المثبّت من حزمة Minecraft الرسمية
-(`com.mojang.minecraftpe`) ثم يفتح Activity الخاصة بها عبر Android. لا يحاول مسار
-التشغيل العادي تحميل `libminecraftpe.so` من حزمة أخرى، لأن عزل التطبيقات والـ linker
-في إصدارات Android الحديثة يمنع ذلك. يبقى `libbedrock_client.so` مكوّنًا اختياريًا
-للتطوير ولا يمنع فتح اللعبة إذا تعذّر تحميله.
+(`com.mojang.minecraftpe`) ثم يجهّز Instance خاصة داخل التطبيق في:
+
+- `files/instances/{instance}` لإدارة `options.txt`, worlds, resource packs, behavior packs, skins
+- `files/sandbox/{instance}/games/com.mojang` لبناء بيئة Bedrock-style خاصة بالتطبيق
+- `files/instances/{instance}/exports/active/games/com.mojang` كنسخة جاهزة للتصدير
+
+بعد ذلك يحاول V Client — عندما يسمح Android ومسار التخزين المشترك متاحًا — مزامنة
+الـ Instance النشطة إلى مسار Minecraft المشترك التقليدي `games/com.mojang` ثم يفتح
+Activity الخاصة باللعبة. إذا لم يسمح النظام بالكتابة إلى هذا المسار، تبقى البيئة
+الخاصّة جاهزة محليًا داخل V Client ويستمر التشغيل العادي للتطبيق الرسمي.
+
+لا يحاول مسار التشغيل العادي تحميل `libminecraftpe.so` من حزمة أخرى، لأن عزل
+التطبيقات والـ linker في إصدارات Android الحديثة يمنع ذلك. يبقى
+`libbedrock_client.so` مكوّنًا اختياريًا للتطوير ولا يمنع فتح اللعبة إذا تعذّر تحميله.
 
 الهدف تعليمي ولبناء Launcher محسن.
 

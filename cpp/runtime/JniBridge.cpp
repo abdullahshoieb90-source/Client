@@ -1,4 +1,4 @@
-here#include "jni_bridge.h"
+#include "JniBridge.h"
 
 #include <string>
 

@@ -1,6 +1,6 @@
 
 #include "imgui_handler.h"
-#include "../../cpp/logger/logger.h"
+#include "../logger/logger.h"
 // #include "imgui.h" - third_party/imgui
 
 namespace bedrock::imgui {
