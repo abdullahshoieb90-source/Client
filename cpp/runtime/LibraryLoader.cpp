@@ -3,6 +3,7 @@
 #include <dlfcn.h>
 
 #include "../logger/logger.h"
+#include "RuntimeConfig.h"
 
 namespace bedrock::runtime {
 

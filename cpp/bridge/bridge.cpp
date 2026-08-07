@@ -63,6 +63,29 @@ void Bridge::logToJava(int level, const std::string& tag, const std::string& msg
     LOGI(tag.c_str(), "%s", msg.c_str());
 }
 
+void Bridge::callJavaMethod(const std::string& method, const std::string& args) {
+    JNIEnv* env = getEnv();
+    if (!env || !bridgeManagerClass || !bridgeManagerRef) return;
+
+    jmethodID mid = nullptr;
+
+    auto it = methodCache.find(method);
+    if (it != methodCache.end()) {
+        mid = it->second;
+    } else {
+        mid = env->GetMethodID(bridgeManagerClass, method.c_str(), "(Ljava/lang/String;)V");
+        if (mid) {
+            methodCache[method] = mid;
+        }
+    }
+
+    if (!mid) return;
+
+    jstring jArgs = env->NewStringUTF(args.c_str());
+    env->CallVoidMethod(bridgeManagerRef, mid, jArgs);
+    env->DeleteLocalRef(jArgs);
+}
+
 // JNI Exports called from Kotlin BridgeManager
 extern "C" {
 

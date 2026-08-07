@@ -1,4 +1,4 @@
-Enter#include <jni.h>
+#include <jni.h>
 #include <string>
 
 #include "RuntimeConfig.h"
