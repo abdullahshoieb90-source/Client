@@ -33,22 +33,6 @@
       "native": true
     },
     {
-      "id": "esp",
-      "name": "ESP",
-      "category": "RENDER",
-      "description": "رؤية عبر الجدران",
-      "enabled_by_default": false,
-      "native": true
-    },
-    {
-      "id": "hitbox",
-      "name": "Hitbox",
-      "category": "COMBAT",
-      "description": "توسيع Hitbox",
-      "enabled_by_default": false,
-      "native": true
-    },
-    {
       "id": "autosprint",
       "name": "AutoSprint",
       "category": "MOVEMENT",

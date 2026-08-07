@@ -64,8 +64,7 @@
 
 ## 9. Modules
 All modules categorized:
-- RENDER: FPS Counter, CPS Counter, Zoom, ESP, Keystrokes, Coordinates
-- COMBAT: Hitbox
+- RENDER: FPS Counter, CPS Counter, Zoom, Keystrokes, Coordinates
 - MOVEMENT: AutoSprint
 - WORLD: Fullbright, TimeChanger
 - CLIENT: others

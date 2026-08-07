@@ -12,8 +12,6 @@ class ModuleManager private constructor() {
         register(CPSCounterModule())
         register(ZoomModule())
         register(FullbrightModule())
-        register(ESPModule())
-        register(HitboxModule())
         register(AutoSprintModule())
         register(KeystrokesModule())
         register(CoordinatesModule())

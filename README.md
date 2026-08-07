@@ -43,7 +43,7 @@ app/
 ├── bootstrap/         # أول كود يعمل
 ├── bridge/            # Kotlin <-> C++ JNI
 ├── hook/              # InstallHook/RemoveHook
-├── modules/           # ESP, Zoom, Hitbox...
+├── modules/           # Zoom and other client modules
 ├── plugins/           # نظام Plugins قابل للتوسيع
 ├── resources/         # موارد داخلية
 ├── resourcepacks/     # إدارة Resource Packs
@@ -143,7 +143,7 @@ cpp/render/ + cpp/modules/ + cpp/hooks/
 - [x] CPS Counter (Left/Right clicks per second)
 - [x] Zoom module
 - [x] Fullbright
-- [x] ESP, Hitbox, AutoSprint
+- [x] AutoSprint
 - [x] Keystrokes, Coordinates HUD
 - [x] Module system قابل للتوسعة
 - [x] Bridge JNI كامل
