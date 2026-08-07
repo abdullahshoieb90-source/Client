@@ -22,6 +22,11 @@
     <string name="launch_success_local_env_only">Minecraft %1$s opened; private instance %2$s was prepared locally only</string>
     <string name="launch_failed">Launch failed: %1$s</string>
     <string name="launch_unknown_error">Unable to launch Minecraft</string>
+    <string name="permission_shared_storage_title">Allow access to shared storage</string>
+    <string name="permission_shared_storage_message">To sync each instance\'s worlds, resource packs and behavior packs into Minecraft, V Client needs \"All files access\". You will be taken to system settings.</string>
+    <string name="permission_shared_storage_grant">Grant access</string>
+    <string name="permission_shared_storage_skip">Continue without syncing</string>
+    <string name="status_permission_required">Grant storage access to sync with Minecraft</string>
     <string name="notification_channel_name">V Client</string>
 
     <string name="fps_counter">FPS Counter</string>
