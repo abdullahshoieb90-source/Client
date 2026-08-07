@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bedrock.client.R
+import com.bedrock.client.environment.permission.PermissionManager
 import com.bedrock.client.launcher.Launcher
 import com.bedrock.client.launcher.LauncherManager
 import com.bedrock.client.minecraft.version.VersionManager
@@ -14,6 +16,7 @@ import com.google.android.material.button.MaterialButton
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var versionManager: VersionManager
+    private lateinit var permissionManager: PermissionManager
     private lateinit var launchButton: MaterialButton
     private lateinit var versionText: TextView
     private lateinit var statusText: TextView
@@ -22,6 +25,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         versionManager = VersionManager.getInstance(requireContext())
+        permissionManager = PermissionManager(requireContext())
         launchButton = view.findViewById(R.id.btn_launch)
         versionText = view.findViewById(R.id.tv_version)
         statusText = view.findViewById(R.id.tv_status)
@@ -40,13 +44,43 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun launchMinecraft() {
         if (launchInProgress) return
 
+        if (!permissionManager.hasSharedStorageAccess()) {
+            showSharedStorageRationale()
+            return
+        }
+
+        performLaunch(syncToSharedStorage = true)
+    }
+
+    /**
+     * Explains why V Client needs "All files access" before sending the user to
+     * system settings. Letting them continue without it still prepares the
+     * instance's sandbox locally, but Minecraft won't see the synced worlds/packs.
+     */
+    private fun showSharedStorageRationale() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.permission_shared_storage_title)
+            .setMessage(R.string.permission_shared_storage_message)
+            .setPositiveButton(R.string.permission_shared_storage_grant) { dialog, _ ->
+                dialog.dismiss()
+                startActivity(permissionManager.buildSharedStorageAccessIntent())
+            }
+            .setNegativeButton(R.string.permission_shared_storage_skip) { dialog, _ ->
+                dialog.dismiss()
+                performLaunch(syncToSharedStorage = false)
+            }
+            .show()
+    }
+
+    private fun performLaunch(syncToSharedStorage: Boolean) {
         launchInProgress = true
         launchButton.isEnabled = false
         statusText.setText(R.string.status_launching)
         statusText.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_secondary))
 
         val launcher = LauncherManager.getInstance().getLauncher()
-        launcher.launch(Launcher.LaunchOptions()) { result ->
+        val options = Launcher.LaunchOptions(syncToSharedStorage = syncToSharedStorage)
+        launcher.launch(options) { result ->
             activity?.runOnUiThread {
                 if (!isAdded) return@runOnUiThread
                 launchInProgress = false
