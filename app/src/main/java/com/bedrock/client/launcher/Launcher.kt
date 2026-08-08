@@ -5,6 +5,8 @@ import com.bedrock.client.R
 import com.bedrock.client.environment.sandbox.MinecraftEnvironmentManager
 import com.bedrock.client.logger.Logger
 import com.bedrock.client.minecraft.`package`.MinecraftPackageManager
+import com.bedrock.client.minecraft.instance.InstanceManager
+import com.bedrock.client.minecraft.pkg.FakeApplicationInfoFactory
 import com.bedrock.client.minecraft.version.VersionManager
 import com.bedrock.client.settings.SettingsManager
 
@@ -85,6 +87,42 @@ class Launcher(context: Context) {
                 Result.Failure(error.message ?: appContext.getString(R.string.launch_unknown_error))
             )
         }
+    }
+
+    /**
+     * Install-free path: runs a previously [com.bedrock.client.installer.ApkImportManager]
+     * -imported instance instead of requiring Minecraft to be installed system-wide.
+     *
+     * NOTE: this prepares the isolated environment (fake ApplicationInfo, per-instance
+     * native lib dir, sandboxed data dir) and hands back everything the runtime layer
+     * needs. It deliberately stops short of actually starting Minecraft's own Activity
+     * class in-process — doing that requires a compile-time reference to Mojang's
+     * MainActivity API, which has to come from the developer's own licensed apk (e.g. via
+     * their own stub-generation step), not from us decompiling/bundling Mojang's code.
+     * Wire the returned ImportedLaunch into GameActivity / cpp/bootstrap from there.
+     */
+    fun launchImported(instanceId: String): Result {
+        val instance = InstanceManager.getInstance(appContext).getInstance(instanceId)
+        val fakeInfo = FakeApplicationInfoFactory.build(instance)
+            ?: return Result.Failure("No apk imported for instance $instanceId yet.")
+
+        val environment = environmentManager.prepare(instanceId, syncToSharedStorage = false)
+        environment.notes.forEach { Logger.i("Launcher", it) }
+
+        Logger.i(
+            "Launcher",
+            "Prepared install-free instance $instanceId: apk=${fakeInfo.sourceDir}, " +
+                "libs=${fakeInfo.nativeLibraryDir}, data=${fakeInfo.dataDir}"
+        )
+
+        return Result.Success(
+            version = instance.version,
+            packageName = fakeInfo.packageName,
+            instanceId = instanceId,
+            sandboxPath = environment.sandbox.root.absolutePath,
+            exportTargetPath = null,
+            environmentSynchronized = false
+        )
     }
 
     data class LaunchOptions(
