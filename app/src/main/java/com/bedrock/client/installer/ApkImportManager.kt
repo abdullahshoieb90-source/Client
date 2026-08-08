@@ -106,4 +106,3 @@ class ApkImportManager(private val context: Context) {
         return info.versionName to versionCode
     }
 }
-
