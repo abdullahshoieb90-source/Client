@@ -4,7 +4,6 @@
     <SwitchPreferenceCompat android:key="cps_counter" android:title="CPS Counter" android:defaultValue="true"/>
     <SwitchPreferenceCompat android:key="zoom" android:title="Enable Zoom" android:defaultValue="false"/>
     <SwitchPreferenceCompat android:key="fullbright" android:title="Fullbright" android:defaultValue="false"/>
-    <SwitchPreferenceCompat android:key="esp" android:title="ESP" android:defaultValue="false"/>
     <SwitchPreferenceCompat android:key="keystrokes" android:title="Keystrokes" android:defaultValue="true"/>
     <SwitchPreferenceCompat android:key="coordinates" android:title="Coordinates HUD" android:defaultValue="true"/>
 </PreferenceScreen>

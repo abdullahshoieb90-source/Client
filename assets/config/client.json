@@ -21,9 +21,6 @@
     },
     "fullbright": {
       "enabled": false
-    },
-    "esp": {
-      "enabled": false
     }
   },
   "bridge": {
