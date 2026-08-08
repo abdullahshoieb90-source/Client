@@ -109,11 +109,24 @@ class Launcher(context: Context) {
         val environment = environmentManager.prepare(instanceId, syncToSharedStorage = false)
         environment.notes.forEach { Logger.i("Launcher", it) }
 
+        val runtimeManager = com.bedrock.client.runtime.RuntimeManager(appContext)
+        if (!runtimeManager.prepareImported(instanceId)) {
+            return Result.Failure("Failed to push native runtime config for $instanceId.")
+        }
+
         Logger.i(
             "Launcher",
             "Prepared install-free instance $instanceId: apk=${fakeInfo.sourceDir}, " +
                 "libs=${fakeInfo.nativeLibraryDir}, data=${fakeInfo.dataDir}"
         )
+
+        // From here the C++ side (Bootstrap::loadOriginalMinecraft) dlopens
+        // libminecraftpe.so strictly from this instance's isolated nativeLibraryDir — see
+        // cpp/bootstrap/bootstrap.cpp. Actually calling BridgeManager here (rather than
+        // inside Launcher) is deliberately left to GameActivity.onCreate, since launchGame()
+        // needs a live Activity/Surface, not just this preparation step. Call
+        // BridgeManager.getInstance().launchGame(instance.path.absolutePath, instance.version)
+        // from there once GameActivity is wired to this instance.
 
         return Result.Success(
             version = instance.version,
