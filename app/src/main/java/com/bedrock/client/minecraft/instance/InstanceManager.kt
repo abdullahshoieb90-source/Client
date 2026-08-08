@@ -1,6 +1,7 @@
 package com.bedrock.client.minecraft.instance
 
 import android.content.Context
+import android.os.Build
 import com.bedrock.client.minecraft.version.VersionManager
 import java.io.File
 
@@ -16,8 +17,15 @@ class InstanceManager private constructor(private val context: Context) {
         val skinPacksDir: File,
         val shadersDir: File,
         val exportsDir: File,
-        val cacheDir: File
-    )
+        val cacheDir: File,
+        /** Holds the imported base/split apk copies for an install-free instance. */
+        val apkDir: File,
+        /** Native libs extracted for this instance's abi only — never shared with others. */
+        val libsDir: File
+    ) {
+        /** Non-null once an apk has actually been imported into [apkDir]. */
+        val importedBaseApk: File? get() = File(apkDir, "base.apk").takeIf { it.exists() }
+    }
 
     private val versionManager = VersionManager.getInstance(context)
 
@@ -46,6 +54,8 @@ class InstanceManager private constructor(private val context: Context) {
         val shadersDir = File(root, "shaders").apply { mkdirs() }
         val exportsDir = File(root, "exports").apply { mkdirs() }
         val cacheDir = File(root, "cache").apply { mkdirs() }
+        val apkDir = File(root, "apk").apply { mkdirs() }
+        val libsDir = File(root, "libs/${Build.SUPPORTED_ABIS.firstOrNull() ?: "arm64-v8a"}").apply { mkdirs() }
 
         val optionsFile = File(profileDir, "options.txt")
         if (!optionsFile.exists()) {
@@ -68,7 +78,9 @@ class InstanceManager private constructor(private val context: Context) {
             skinPacksDir = skinPacksDir,
             shadersDir = shadersDir,
             exportsDir = exportsDir,
-            cacheDir = cacheDir
+            cacheDir = cacheDir,
+            apkDir = apkDir,
+            libsDir = libsDir
         )
     }
 
