@@ -3,6 +3,7 @@
 #include "../logger/logger.h"
 #include "../loader/loader.h"
 #include "../runtime/runtime.h"
+#include "../runtime/RuntimeConfig.h"
 #include "../bridge/bridge.h"
 #include <dlfcn.h>
 #include <android/log.h>
@@ -51,11 +52,22 @@ bool Bootstrap::launchMinecraft(const std::string& instancePath, const std::stri
 
 bool Bootstrap::loadOriginalMinecraft() {
     loader::Loader& loader = loader::Loader::getInstance();
-    minecraftHandle = loader.loadLibrary("minecraftpe");
-    if (!minecraftHandle) {
-        // Try alternative paths
-        minecraftHandle = dlopen("libminecraftpe.so", RTLD_NOW);
+
+    // IMPORTANT: never dlopen("minecraftpe") or dlopen("libminecraftpe.so") here — a bare
+    // name search walks the process's default linker namespace and can silently pick up
+    // whatever copy the OS already has loaded (e.g. from an installed Minecraft app),
+    // defeating per-instance isolation. Always resolve the full absolute path that was
+    // set for *this* instance via RuntimeConfig (populated from
+    // FakeApplicationInfoFactory / RuntimeManager on the Kotlin side).
+    const std::string libPath = runtime::RuntimeConfig::getInstance().getMinecraftLibraryPath();
+
+    if (libPath.empty() || libPath == "/libminecraftpe.so") {
+        LOGE("Bootstrap", "No instance native library path configured — call "
+                           "RuntimeManager.prepare()/prepareImported() before launching.");
+        return false;
     }
+
+    minecraftHandle = loader.loadFromPath(libPath);
     return minecraftHandle != nullptr;
 }
 
